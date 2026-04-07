@@ -423,167 +423,307 @@ func mm256_permutevar_pd*(a: M256d, b: M256i): M256d {.importc: "_mm256_permutev
 # lane unit : float32(ps) / lane numbers : 4 (128-bit) or 8 (256-bit)
 func mm_permutevar_ps*(a: M128, b: M128i): M128 {.importc: "_mm_permutevar_ps".}
 func mm256_permutevar_ps*(a: M256, b: M256i): M256 {.importc: "_mm256_permutevar_ps".}
-
+# operating : compute the approximate reciprocal of packed single-precision floating-point elements
+# lane unit : float32(ps) / lane numbers : 8 (256-bit)
 func mm256_rcp_ps*(a: M256): M256 {.importc: "_mm256_rcp_ps".}
 
+# operating : round packed double-precision floating-point elements using the rounding parameter
+# lane unit : float64(pd) / lane numbers : 4 (256-bit)
 func mm256_round_pd*(a: M256d, rounding: int32 | uint32): M256d {.importc: "_mm256_round_pd".}
 
+# operating : round packed single-precision floating-point elements using the rounding parameter
+# lane unit : float32(ps) / lane numbers : 8 (256-bit)
 func mm256_round_ps*(a: M256, rounding: int32 | uint32): M256 {.importc: "_mm256_round_ps".}
 
+# operating : compute the approximate reciprocal square root of packed single-precision floating-point elements
+# lane unit : float32(ps) / lane numbers : 8 (256-bit)
 func mm256_rsqrt_ps*(a: M256): M256 {.importc: "_mm256_rsqrt_ps".}
 
+# operating : set packed 16-bit integers with the supplied values in reverse order
+# lane unit : int16(epi16) / lane numbers : 16 (256-bit)
 func mm256_set_epi16*(e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0: int16 | uint16): M256i {.importc: "_mm256_set_epi16".}
 
+# operating : set packed 32-bit integers with the supplied values in reverse order
+# lane unit : int32(epi32) / lane numbers : 8 (256-bit)
 func mm256_set_epi32*(e7, e6, e5, e4, e3, e2, e1, e0: int32 | uint32): M256i {.importc: "_mm256_set_epi32".}
 
+# operating : set packed 64-bit integers with the supplied values in reverse order
+# lane unit : int64(epi64x) / lane numbers : 4 (256-bit)
 func mm256_set_epi64x*(e3, e2, e1, e0: int64 | uint64): M256i {.importc: "_mm256_set_epi64x".}
 
+# operating : set packed 8-bit integers with the supplied values in reverse order
+# lane unit : int8(epi8) / lane numbers : 32 (256-bit)
 func mm256_set_epi8*(e31, e30, e29, e28, e27, e26, e25, e24, e23, e22, e21, e20, e19, e18, e17, e16, e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0: int8 | uint8): M256i {.importc: "_mm256_set_epi8".}
 
+# operating : combine two 128-bit single-precision vectors into one 256-bit vector
+# lane unit : 128-bit block / lane numbers : 2 (256-bit)
 func mm256_set_m128*(hi, lo: M128): M256 {.importc: "_mm256_set_m128".}
 
+# operating : combine two 128-bit double-precision vectors into one 256-bit vector
+# lane unit : 128-bit block / lane numbers : 2 (256-bit)
 func mm256_set_m128d*(hi, lo: M128d): M256d {.importc: "_mm256_set_m128d".}
 
+# operating : combine two 128-bit integer vectors into one 256-bit vector
+# lane unit : 128-bit block / lane numbers : 2 (256-bit)
 func mm256_set_m128i*(hi, lo: M128i): M256i {.importc: "_mm256_set_m128i".}
 
+# operating : set packed double-precision floating-point elements with the supplied values in reverse order
+# lane unit : float64(pd) / lane numbers : 4 (256-bit)
 func mm256_set_pd*(e3, e2, e1, e0: float64): M256d {.importc: "_mm256_set_pd".}
 
+# operating : set packed single-precision floating-point elements with the supplied values in reverse order
+# lane unit : float32(ps) / lane numbers : 8 (256-bit)
 func mm256_set_ps*(e7, e6, e5, e4, e3, e2, e1, e0: float32): M256 {.importc: "_mm256_set_ps".}
 
+# operating : broadcast a 16-bit integer to all elements
+# lane unit : int16(epi16) / lane numbers : 16 (256-bit)
 func mm256_set1_epi16*(a: int16 | uint16): M256i {.importc: "_mm256_set1_epi16".}
 
+# operating : broadcast a 32-bit integer to all elements
+# lane unit : int32(epi32) / lane numbers : 8 (256-bit)
 func mm256_set1_epi32*(a: int32 | uint32): M256i {.importc: "_mm256_set1_epi32".}
 
+# operating : broadcast a 64-bit integer to all elements
+# lane unit : int64(epi64x) / lane numbers : 4 (256-bit)
 func mm256_set1_epi64x*(a: int64 | uint64): M256i {.importc: "_mm256_set1_epi64x".}
 
+# operating : broadcast an 8-bit integer to all elements
+# lane unit : int8(epi8) / lane numbers : 32 (256-bit)
 func mm256_set1_epi8*(a: int8 | uint8): M256i {.importc: "_mm256_set1_epi8".}
 
+# operating : broadcast a double-precision floating-point value to all elements
+# lane unit : float64(pd) / lane numbers : 4 (256-bit)
 func mm256_set1_pd*(a: float64): M256d {.importc: "_mm256_set1_pd".}
 
+# operating : broadcast a single-precision floating-point value to all elements
+# lane unit : float32(ps) / lane numbers : 8 (256-bit)
 func mm256_set1_ps*(a: float32): M256 {.importc: "_mm256_set1_ps".}
 
+# operating : set packed 16-bit integers with the supplied values in natural order
+# lane unit : int16(epi16) / lane numbers : 16 (256-bit)
 func mm256_setr_epi16*(e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0: int16 | uint16): M256i {.importc: "_mm256_setr_epi16".}
 
+# operating : set packed 32-bit integers with the supplied values in natural order
+# lane unit : int32(epi32) / lane numbers : 8 (256-bit)
 func mm256_setr_epi32*(e7, e6, e5, e4, e3, e2, e1, e0: int32 | uint32): M256i {.importc: "_mm256_setr_epi32".}
 
+# operating : set packed 64-bit integers with the supplied values in natural order
+# lane unit : int64(epi64x) / lane numbers : 4 (256-bit)
 func mm256_setr_epi64x*(e3, e2, e1, e0: int64 | uint64): M256i {.importc: "_mm256_setr_epi64x".}
 
+# operating : set packed 8-bit integers with the supplied values in natural order
+# lane unit : int8(epi8) / lane numbers : 32 (256-bit)
 func mm256_setr_epi8*(e31, e30, e29, e28, e27, e26, e25, e24, e23, e22, e21, e20, e19, e18, e17, e16, e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0: int8 | uint8): M256i {.importc: "_mm256_setr_epi8".}
 
+# operating : combine two 128-bit single-precision vectors into one 256-bit vector in natural order
+# lane unit : 128-bit block / lane numbers : 2 (256-bit)
 func mm256_setr_m128*(lo, hi: M128): M256 {.importc: "_mm256_setr_m128".}
 
+# operating : combine two 128-bit double-precision vectors into one 256-bit vector in natural order
+# lane unit : 128-bit block / lane numbers : 2 (256-bit)
 func mm256_setr_m128d*(lo, hi: M128d): M256d {.importc: "_mm256_setr_m128d".}
 
+# operating : combine two 128-bit integer vectors into one 256-bit vector in natural order
+# lane unit : 128-bit block / lane numbers : 2 (256-bit)
 func mm256_setr_m128i*(lo, hi: M128i): M256i {.importc: "_mm256_setr_m128i".}
 
+# operating : set packed double-precision floating-point elements with the supplied values in natural order
+# lane unit : float64(pd) / lane numbers : 4 (256-bit)
 func mm256_setr_pd*(e3, e2, e1, e0: float64): M256d {.importc: "_mm256_setr_pd".}
 
+# operating : set packed single-precision floating-point elements with the supplied values in natural order
+# lane unit : float32(ps) / lane numbers : 8 (256-bit)
 func mm256_setr_ps*(e7, e6, e5, e4, e3, e2, e1, e0: float32): M256 {.importc: "_mm256_setr_ps".}
 
+# operating : initialize a 256-bit vector with all zeros
+# lane unit : float64(pd) / lane numbers : 4 (256-bit)
 func mm256_setzero_pd*(): M256d {.importc: "_mm256_setzero_pd".}
 
+# operating : initialize a 256-bit vector with all zeros
+# lane unit : float32(ps) / lane numbers : 8 (256-bit)
 func mm256_setzero_ps*(): M256 {.importc: "_mm256_setzero_ps".}
 
+# operating : initialize a 256-bit vector with all zeros
+# lane unit : any (integer) / lane numbers : 256-bit total
 func mm256_setzero_si256*(): M256i {.importc: "_mm256_setzero_si256".}
 
+# operating : shuffle double-precision elements from 'a' and 'b' within 128-bit lanes using imm8
+# lane unit : float64(pd) / lane numbers : 4 (256-bit)
 func mm256_shuffle_pd*(a, b: M256d, imm8: int32 | uint32): M256d {.importc: "_mm256_shuffle_pd".}
 
+# operating : shuffle single-precision elements from 'a' and 'b' within 128-bit lanes using imm8
+# lane unit : float32(ps) / lane numbers : 8 (256-bit)
 func mm256_shuffle_ps*(a, b: M256, imm8: int32 | uint32): M256 {.importc: "_mm256_shuffle_ps".}
 
+# operating : compute the square root of packed double-precision floating-point elements
+# lane unit : float64(pd) / lane numbers : 4 (256-bit)
 func mm256_sqrt_pd*(a: M256d): M256d {.importc: "_mm256_sqrt_pd".}
 
+# operating : compute the square root of packed single-precision floating-point elements
+# lane unit : float32(ps) / lane numbers : 8 (256-bit)
 func mm256_sqrt_ps*(a: M256): M256 {.importc: "_mm256_sqrt_ps".}
 
+# operating : store 256-bits (4 double-precision elements) into an aligned memory location
+# lane unit : float64(pd) / lane numbers : 4 (256-bit)
 func mm256_store_pd*(p: pointer, a: M256d) {.importc: "_mm256_store_pd".}
 
+# operating : store 256-bits (8 single-precision elements) into an aligned memory location
+# lane unit : float32(ps) / lane numbers : 8 (256-bit)
 func mm256_store_ps*(p: pointer, a: M256) {.importc: "_mm256_store_ps".}
 
+# operating : store 256-bits (integer data) into an aligned memory location
+# lane unit : any (integer) / lane numbers : 256-bit total
 func mm256_store_si256*(p: pointer, a: M256i) {.importc: "_mm256_store_si256".}
 
+# operating : store 256-bits (4 double-precision elements) into an unaligned memory location
+# lane unit : float64(pd) / lane numbers : 4 (256-bit)
 func mm256_storeu_pd*(p: pointer, a: M256d) {.importc: "_mm256_storeu_pd".}
 
+# operating : store 256-bits (8 single-precision elements) into an unaligned memory location
+# lane unit : float32(ps) / lane numbers : 8 (256-bit)
 func mm256_storeu_ps(p: ptr float32, a: M256) {.importc: "_mm256_storeu_ps".}
-
+# operating : store 256-bits (8 single-precision elements) into an unaligned memory location
+# lane unit : float32(ps) / lane numbers : 8 (256-bit)
 template mm256_storeu_ps*(p: pointer, a: M256) =
   mm256_storeu_ps(cast[ptr float32](p), a)
 
+# operating : store 256-bits (integer data) into an unaligned memory location
+# lane unit : any (integer) / lane numbers : 256-bit total
 func mm256_storeu_si256(p: ptr M256i, a: M256i) {.importc: "_mm256_storeu_si256".}
 
+# operating : store 256-bits (integer data) into an unaligned memory location (template wrapper)
+# lane unit : any (integer) / lane numbers : 256-bit total
 template mm256_storeu_si256*(p: pointer, a: M256i) =
   mm256_storeu_si256(cast[ptr M256i](p), a)
 
+# operating : store the high and low 128-bit halves of a 256-bit single-precision vector to separate memory locations
+# lane unit : float32(ps) / lane numbers : 4 + 4 (256-bit)
 func mm256_storeu2_m128*(hi, lo: pointer) {.importc: "_mm256_storeu2_m128".}
 
+# operating : store the high and low 128-bit halves of a 256-bit double-precision vector to separate memory locations
+# lane unit : float64(pd) / lane numbers : 2 + 2 (256-bit)
 func mm256_storeu2_m128d*(hi, lo: pointer) {.importc: "_mm256_storeu2_m128d".}
 
+# operating : store the high and low 128-bit halves of a 256-bit integer vector to separate memory locations
+# lane unit : any (integer) / lane numbers : 128-bit + 128-bit (256-bit)
 func mm256_storeu2_m128i*(hi, lo: pointer) {.importc: "_mm256_storeu2_m128i".}
 
+# operating : store 256-bits of double-precision data using a non-temporal hint (bypassing cache)
+# lane unit : float64(pd) / lane numbers : 4 (256-bit)
 func mm256_stream_pd*(p: pointer, a: M256d) {.importc: "_mm256_stream_pd".}
 
+# operating : store 256-bits of single-precision data using a non-temporal hint (bypassing cache)
+# lane unit : float32(ps) / lane numbers : 8 (256-bit)
 func mm256_stream_ps*(p: pointer, a: M256) {.importc: "_mm256_stream_ps".}
 
+# operating : store 256-bits of integer data using a non-temporal hint (bypassing cache)
+# lane unit : any (integer) / lane numbers : 256-bit total
 func mm256_stream_si256*(p: pointer, a: M256i) {.importc: "_mm256_stream_si256".}
 
+# operating : subtract packed double-precision floating-point elements in 'b' from 'a'
+# lane unit : float64(pd) / lane numbers : 4 (256-bit)
 func mm256_sub_pd*(a, b: M256d): M256d {.importc: "_mm256_sub_pd".}
 
+# operating : subtract packed single-precision floating-point elements in 'b' from 'a'
+# lane unit : float32(ps) / lane numbers : 8 (256-bit)
 func mm256_sub_ps*(a, b: M256): M256 {.importc: "_mm256_sub_ps".}
 
+# operating : compute the carry flag using bitwise AND of NOT 'a' and 'b' (Check if all bits in 'b' are set in 'a')
+# lane unit : float64(pd) / lane numbers : 2 (128-bit) or 4 (256-bit)
 func mm_testc_pd*(a, b: M128d): int32 {.importc: "_mm_testc_pd".}
-
 func mm256_testc_pd*(a, b: M256d): int32 {.importc: "_mm256_testc_pd".}
 
+# operating : compute the carry flag using bitwise AND of NOT 'a' and 'b'
+# lane unit : float32(ps) / lane numbers : 4 (128-bit) or 8 (256-bit)
 func mm_testc_ps*(a, b: M128): int32 {.importc: "_mm_testc_ps".}
-
 func mm256_testc_ps*(a, b: M256): int32 {.importc: "_mm256_testc_ps".}
 
+# operating : compute the carry flag using bitwise AND of NOT 'a' and 'b'
+# lane unit : any (integer) / lane numbers : 256-bit total
 func mm256_testc_si256*(a, b: M256i): int32 {.importc: "_mm256_testc_si256".}
 
+# operating : compute both zero and carry flags (checks if any bit is set and if some but not all bits are set)
+# lane unit : float64(pd) / lane numbers : 2 (128-bit) or 4 (256-bit)
 func mm_testnzc_pd*(a, b: M128d): int32 {.importc: "_mm_testnzc_pd".}
-
 func mm256_testnzc_pd*(a, b: M256d): int32 {.importc: "_mm256_testnzc_pd".}
 
+# operating : compute both zero and carry flags
+# lane unit : float32(ps) / lane numbers : 4 (128-bit) or 8 (256-bit)
 func mm_testnzc_ps*(a, b: M128): int32 {.importc: "_mm_testnzc_ps".}
-
 func mm256_testnzc_ps*(a, b: M256): int32 {.importc: "_mm256_testnzc_ps".}
 
+# operating : compute both zero and carry flags
+# lane unit : any (integer) / lane numbers : 256-bit total
 func mm256_testnzc_si256*(a, b: M256i): int32 {.importc: "_mm256_testnzc_si256".}
 
+# operating : compute the zero flag using bitwise AND of 'a' and 'b' (Check if no bits of 'b' are set in 'a')
+# lane unit : float64(pd) / lane numbers : 2 (128-bit) or 4 (256-bit)
 func mm_testz_pd*(a, b: M128d): int32 {.importc: "_mm_testz_pd".}
-
 func mm256_testz_pd*(a, b: M256d): int32 {.importc: "_mm256_testz_pd".}
 
+# operating : compute the zero flag using bitwise AND of 'a' and 'b'
+# lane unit : float32(ps) / lane numbers : 4 (128-bit) or 8 (256-bit)
 func mm_testz_ps*(a, b: M128): int32 {.importc: "_mm_testz_ps".}
-
 func mm256_testz_ps*(a, b: M256): int32 {.importc: "_mm256_testz_ps".}
 
+# operating : compute the zero flag using bitwise AND of 'a' and 'b'
+# lane unit : any (integer) / lane numbers : 256-bit total
 func mm256_testz_si256*(a, b: M256i): int32 {.importc: "_mm256_testz_si256".}
 
+# operating : return a 256-bit vector of uninitialized double-precision elements
+# lane unit : float64(pd) / lane numbers : 4 (256-bit)
 func mm256_undefined_pd*(): M256d {.importc: "_mm256_undefined_pd".}
 
+# operating : return a 256-bit vector of uninitialized single-precision elements
+# lane unit : float32(ps) / lane numbers : 8 (256-bit)
 func mm256_undefined_ps*(): M256 {.importc: "_mm256_undefined_ps".}
 
+# operating : return a 256-bit vector of uninitialized integer elements
+# lane unit : any (integer) / lane numbers : 256-bit total
 func mm256_undefined_si256*(): M256i {.importc: "_mm256_undefined_si256".}
 
+# operating : unpack and interleave high double-precision elements from 'a' and 'b' within 128-bit lanes
+# lane unit : float64(pd) / lane numbers : 4 (256-bit)
 func mm256_unpackhi_pd*(a, b: M256d): M256d {.importc: "_mm256_unpackhi_pd".}
 
+# operating : unpack and interleave high single-precision elements from 'a' and 'b' within 128-bit lanes
+# lane unit : float32(ps) / lane numbers : 8 (256-bit)
 func mm256_unpackhi_ps*(a, b: M256): M256 {.importc: "_mm256_unpackhi_ps".}
 
+# operating : unpack and interleave low double-precision elements from 'a' and 'b' within 128-bit lanes
+# lane unit : float64(pd) / lane numbers : 4 (256-bit)
 func mm256_unpacklo_pd*(a, b: M256d): M256d {.importc: "_mm256_unpacklo_pd".}
 
+# operating : unpack and interleave low single-precision elements from 'a' and 'b' within 128-bit lanes
+# lane unit : float32(ps) / lane numbers : 8 (256-bit)
 func mm256_unpacklo_ps*(a, b: M256): M256 {.importc: "_mm256_unpacklo_ps".}
 
+# operating : compute the bitwise XOR of packed double-precision floating-point elements
+# lane unit : float64(pd) / lane numbers : 4 (256-bit)
 func mm256_xor_pd*(a, b: M256d): M256d {.importc: "_mm256_xor_pd".}
 
+# operating : compute the bitwise XOR of packed single-precision floating-point elements
+# lane unit : float32(ps) / lane numbers : 8 (256-bit)
 func mm256_xor_ps*(a, b: M256): M256 {.importc: "_mm256_xor_ps".}
 
+# operating : set all YMM registers to zero
+# lane unit : N/A / lane numbers : All registers
 func mm256_zeroall*() {.importc: "_mm256_zeroall".}
 
+# operating : zero the upper 128 bits of all YMM registers
+# lane unit : upper 128-bits / lane numbers : All registers
 func mm256_zeroupper*() {.importc: "_mm256_zeroupper".}
 
+# operating : zero-extend a 128-bit double-precision vector to 256-bit
+# lane unit : float64(pd) / lane numbers : 2 -> 4 (256-bit)
 func mm256_zextpd128_pd256*(a: M128d): M256d {.importc: "_mm256_zextpd128_pd256".}
 
+# operating : zero-extend a 128-bit single-precision vector to 256-bit
+# lane unit : float32(ps) / lane numbers : 4 -> 8 (256-bit)
 func mm256_zextps128_ps256*(a: M128): M256 {.importc: "_mm256_zextps128_ps256".}
 
+# operating : zero-extend a 128-bit integer vector to 256-bit
+# lane unit : any (integer) / lane numbers : 128-bit -> 256-bit
 func mm256_zextsi128_si256*(a: M128i): M256i {.importc: "_mm256_zextsi128_si256".}
 
 {.pop.}
