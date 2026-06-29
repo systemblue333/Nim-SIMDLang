@@ -1,4 +1,6 @@
 import avx
+import sse
+import sse2
 
 export avx
 
@@ -435,5 +437,263 @@ func mm256_unpacklo_epi8*(a, b: M256i): M256i {.importc: "_mm256_unpacklo_epi8".
 # operating : bitwise XOR of two 256-bit vectors
 # lane unit : any (integer) / lane numbers : 256-bit total
 func mm256_xor_si256*(a, b: M256i): M256i {.importc: "_mm256_xor_si256".}
+
+# operating : broadcast the first single-precision (32-bit) floating-point element of a to all elements of a 256-bit vector
+# lane unit : float32(ps) / source : 128-bit (lowest 32-bit used) -> destination : 256-bit (8 lanes)
+func mm256_broadcastss_ps*(x: M128): M256 {.importc: "_mm256_broadcastss_ps".}
+
+# operating : broadcast the first double-precision (64-bit) floating-point element of a to all elements of a 256-bit vector
+# lane unit : float64(pd) / source : 128-bit (lowest 64-bit used) -> destination : 256-bit (4 lanes)
+func mm256_broadcastsd_pd*(x: M128d): M256d {.importc: "_mm256_broadcastsd_pd".}
+
+# operating : load 32-bit integers from memory using a mask (if mask bit is 1, load; else set to 0)
+# lane unit : int32(epi32) / total : 128-bit (4 lanes)
+func mm_maskload_epi32*(x: ptr int32, m: M128i): M128i {.importc: "_mm_maskload_epi32".}
+
+# operating : load 64-bit integers from memory using a mask (if mask bit is 1, load; else set to 0)
+# lane unit : int64(epi64) / total : 128-bit (2 lanes)
+func mm_maskload_epi64*(x: ptr int64, m: M128i): M128i {.importc: "_mm_maskload_epi64".}
+
+# operating : store 32-bit integers to memory using a mask (if mask bit is 1, store; else do nothing)
+# lane unit : int32(epi32) / total : 128-bit (4 lanes)
+func mm_maskstore_epi32*(x: ptr int32, m: M128i, y: M128i): void {.importc: "_mm_maskstore_epi32".}
+
+# operating : store 64-bit integers to memory using a mask (if mask bit is 1, store; else do nothing)
+# lane unit : int64(epi64) / total : 128-bit (2 lanes)
+func mm_maskstore_epi64*(x: ptr int64, m: M128i, y: M128i): void {.importc: "_mm_maskstore_epi64".}
+
+# operating : shift 32-bit integers left by the amount specified in corresponding elements of y
+# lane unit : int32(epi32) / total : 128-bit (variable shift)
+func mm_sllv_epi32*(x: M128i, y: M128i): M128i {.importc: "_mm_sllv_epi32".}
+
+# operating : shift 64-bit integers left by the amount specified in corresponding elements of y
+# lane unit : int64(epi64) / total : 128-bit (variable shift)
+func mm_sllv_epi64*(x: M128i, y: M128i): M128i {.importc: "_mm_sllv_epi64".}
+
+# operating : shift 32-bit integers right (arithmetic) by the amount specified in corresponding elements of y
+# lane unit : int32(epi32) / total : 128-bit (variable shift, sign-extension)
+func mm_srav_epi32*(x: M128i, y: M128i): M128i {.importc: "_mm_srav_epi32".}
+
+# operating : shift 32-bit integers right (logical) by the amount specified in corresponding elements of y
+# lane unit : int32(epi32) / total : 128-bit (variable shift, zero-filled)
+func mm_srlv_epi32*(x: M128i, y: M128i): M128i {.importc: "_mm_srlv_epi32".}
+
+# operating : shift 64-bit integers right (logical) by the amount specified in corresponding elements of y
+# lane unit : int64(epi64) / total : 128-bit (variable shift, zero-filled)
+func mm_srlv_epi64*(x: M128i, y: M128i): M128i {.importc: "_mm_srlv_epi64".}
+
+# --- Gather Double Precision (pd) ---
+
+# operating : gather double-precision floating-point values from memory using 32-bit indices
+# lane unit : float64(pd) / index : 32-bit(i32) / addr : base + (index * scale)
+func mm_i32gather_pd*(base: ptr float64, index: M128i, scale: int32): M128d {.importc: "_mm_i32gather_pd".}
+
+# operating : conditionally gather double-precision values from memory using 32-bit indices and a mask
+# lane unit : float64(pd) / mask : if bit set, gather; else keep src / index : 32-bit(i32)
+func mm_mask_i32gather_pd*(src: M128d, base: ptr float64, index: M128i, mask: M128d, scale: int32): M128d {.importc: "_mm_mask_i32gather_pd".}
+
+# operating : gather 4 double-precision values into a 256-bit vector using 32-bit indices
+# lane unit : float64(pd) / index : 32-bit(i32) / total : 256-bit
+func mm256_i32gather_pd*(base: ptr float64, index: M128i, scale: int32): M256d {.importc: "_mm256_i32gather_pd".}
+
+# operating : conditionally gather 4 double-precision values into a 256-bit vector using a mask
+# lane unit : float64(pd) / mask : 256-bit / index : 32-bit(i32)
+func mm256_mask_i32gather_pd*(src: M256d, base: ptr float64, index: M128i, mask: M256d, scale: int32): M256d {.importc: "_mm256_mask_i32gather_pd".}
+
+# operating : gather double-precision values from memory using 64-bit indices
+# lane unit : float64(pd) / index : 64-bit(i64) / addr : base + (index * scale)
+func mm_i64gather_pd*(base: ptr float64, index: M128i, scale: int32): M128d {.importc: "_mm_i64gather_pd".}
+
+# operating : conditionally gather double-precision values from memory using 64-bit indices and a mask
+# lane unit : float64(pd) / mask : 128-bit / index : 64-bit(i64)
+func mm_mask_i64gather_pd*(src: M128d, base: ptr float64, index: M128i, mask: M128d, scale: int32): M128d {.importc: "_mm_mask_i64gather_pd".}
+
+# --- Gather Single Precision (ps) ---
+
+# operating : gather single-precision floating-point values from memory using 32-bit indices
+# lane unit : float32(ps) / index : 32-bit(i32) / total : 128-bit
+func mm_i32gather_ps*(base: ptr float32, index: M128i, scale: int32): M128 {.importc: "_mm_i32gather_ps".}
+
+# operating : conditionally gather single-precision values from memory using a mask
+# lane unit : float32(ps) / mask : 128-bit / index : 32-bit(i32)
+func mm_mask_i32gather_ps*(src: M128, base: ptr float32, index: M128i, mask: M128, scale: int32): M128 {.importc: "_mm_mask_i32gather_ps".}
+
+# operating : gather single-precision values from memory using 64-bit indices
+# lane unit : float32(ps) / index : 64-bit(i64) / source index is 128-bit vector
+func mm_i64gather_ps*(base: ptr float32, index: M128i, scale: int32): M128 {.importc: "_mm_i64gather_ps".}
+
+# operating : conditionally gather single-precision values from memory using 64-bit indices and a mask
+# lane unit : float32(ps) / mask : 128-bit / index : 64-bit(i64)
+func mm_mask_i64gather_ps*(src: M128, base: ptr float32, index: M128i, mask: M128, scale: int32): M128 {.importc: "_mm_mask_i64gather_ps".}
+
+# --- Gather Integers (epi32/epi64) ---
+
+# operating : gather 64-bit integers from memory using 32-bit indices
+# lane unit : int64(epi64) / index : 32-bit(i32) / total : 128-bit
+func mm_i32gather_epi64*(base: ptr int64, index: M128i, scale: int32): M128i {.importc: "_mm_i32gather_epi64".}
+
+# operating : conditionally gather 64-bit integers using 32-bit indices and a mask
+# lane unit : int64(epi64) / mask : 128-bit / index : 32-bit(i32)
+func mm_mask_i32gather_epi64*(src: M128i, base: ptr int64, index: M128i, mask: M128i, scale: int32): M128i {.importc: "_mm_mask_i32gather_epi64".}
+
+# operating : gather 64-bit integers from memory using 64-bit indices
+# lane unit : int64(epi64) / index : 64-bit(i64) / total : 128-bit
+func mm_i64gather_epi64*(base: ptr int64, index: M128i, scale: int32): M128i {.importc: "_mm_i64gather_epi64".}
+
+# operating : conditionally gather 64-bit integers using 64-bit indices and a mask
+# lane unit : int64(epi64) / mask : 128-bit / index : 64-bit(i64)
+func mm_mask_i64gather_epi64*(src: M128i, base: ptr int64, index: M128i, mask: M128i, scale: int32): M128i {.importc: "_mm_mask_i64gather_epi64".}
+
+# operating : gather 32-bit integers from memory using 32-bit indices
+# lane unit : int32(epi32) / index : 32-bit(i32) / total : 128-bit
+func mm_i32gather_epi32*(base: ptr int32, index: M128i, scale: int32): M128i {.importc: "_mm_i32gather_epi32".}
+
+# operating : conditionally gather 32-bit integers using 32-bit indices and a mask
+# lane unit : int32(epi32) / mask : 128-bit / index : 32-bit(i32)
+func mm_mask_i32gather_epi32*(src: M128i, base: ptr int32, index: M128i, mask: M128i, scale: int32): M128i {.importc: "_mm_mask_i32gather_epi32".}
+
+# operating : gather 32-bit integers from memory using 64-bit indices
+# lane unit : int32(epi32) / index : 64-bit(i64) / total : 128-bit (only lowest 2 indices used)
+func mm_i64gather_epi32*(base: ptr int32, index: M128i, scale: int32): M128i {.importc: "_mm_i64gather_epi32".}
+
+# operating : conditionally gather 32-bit integers using 64-bit indices and a mask
+# lane unit : int32(epi32) / mask : 128-bit / index : 64-bit(i64)
+func mm_mask_i64gather_epi32*(src: M128i, base: ptr int32, index: M128i, mask: M128i, scale: int32): M128i {.importc: "_mm_mask_i64gather_epi32".}
+
+# --- 128-bit Vector Reductions (SSE/AVX) ---
+
+# operating : reduce a 128-bit integer vector by adding all 16-bit elements
+# lane unit : int16(epi16) / operation : sum(lanes[0..7])
+func mm_reduce_add_epi16*(w: M128i): int16 {.importc: "_mm_reduce_add_epi16".}
+
+# operating : reduce a 128-bit integer vector by multiplying all 16-bit elements
+# lane unit : int16(epi16) / operation : product(lanes[0..7])
+func mm_reduce_mul_epi16*(w: M128i): int16 {.importc: "_mm_reduce_mul_epi16".}
+
+# operating : reduce a 128-bit integer vector by bitwise AND on all 16-bit elements
+# lane unit : int16(epi16) / operation : AND(lanes[0..7])
+func mm_reduce_and_epi16*(w: M128i): int16 {.importc: "_mm_reduce_and_epi16".}
+
+# operating : reduce a 128-bit integer vector by bitwise OR on all 16-bit elements
+# lane unit : int16(epi16) / operation : OR(lanes[0..7])
+func mm_reduce_or_epi16*(w: M128i): int16 {.importc: "_mm_reduce_or_epi16".}
+
+# operating : find the maximum signed 16-bit integer among all elements in a 128-bit vector
+# lane unit : int16(epi16) / operation : max(lanes[0..7])
+func mm_reduce_max_epi16*(v: M128i): int16 {.importc: "_mm_reduce_max_epi16".}
+
+# operating : find the maximum unsigned 16-bit integer among all elements in a 128-bit vector
+# lane unit : uint16(epu16) / operation : max_unsigned(lanes[0..7])
+func mm_reduce_max_epu16*(v: M128i): uint16 {.importc: "_mm_reduce_max_epu16".}
+
+# operating : find the minimum signed 16-bit integer among all elements in a 128-bit vector
+# lane unit : int16(epi16) / operation : min(lanes[0..7])
+func mm_reduce_min_epi16*(v: M128i): int16 {.importc: "_mm_reduce_min_epi16".}
+
+# operating : find the minimum unsigned 16-bit integer among all elements in a 128-bit vector
+# lane unit : uint16(epu16) / operation : min_unsigned(lanes[0..7])
+func mm_reduce_min_epu16*(v: M128i): uint16 {.importc: "_mm_reduce_min_epu16".}
+
+# --- 256-bit Vector Reductions (AVX2/AVX-512) ---
+
+# operating : reduce a 256-bit integer vector by adding all 16-bit elements
+# lane unit : int16(epi16) / operation : sum(lanes[0..15])
+func mm256_reduce_add_epi16*(w: M256i): int16 {.importc: "_mm256_reduce_add_epi16".}
+
+# operating : reduce a 256-bit integer vector by multiplying all 16-bit elements
+# lane unit : int16(epi16) / operation : product(lanes[0..15])
+func mm256_reduce_mul_epi16*(w: M256i): int16 {.importc: "_mm256_reduce_mul_epi16".}
+
+# operating : reduce a 256-bit integer vector by bitwise AND on all 16-bit elements
+# lane unit : int16(epi16) / operation : AND(lanes[0..15])
+func mm256_reduce_and_epi16*(w: M256i): int16 {.importc: "_mm256_reduce_and_epi16".}
+
+# operating : reduce a 256-bit integer vector by bitwise OR on all 16-bit elements
+# lane unit : int16(epi16) / operation : OR(lanes[0..15])
+func mm256_reduce_or_epi16*(w: M256i): int16 {.importc: "_mm256_reduce_or_epi16".}
+
+# operating : find the maximum signed 16-bit integer among all elements in a 256-bit vector
+# lane unit : int16(epi16) / operation : max(lanes[0..15])
+func mm256_reduce_max_epi16*(v: M256i): int16 {.importc: "_mm256_reduce_max_epi16".}
+
+# operating : find the maximum unsigned 16-bit integer among all elements in a 256-bit vector
+# lane unit : uint16(epu16) / operation : max_unsigned(lanes[0..15])
+func mm256_reduce_max_epu16*(v: M256i): uint16 {.importc: "_mm256_reduce_max_epu16".}
+
+# operating : find the minimum signed 16-bit integer among all elements in a 256-bit vector
+# lane unit : int16(epi16) / operation : min(lanes[0..15])
+func mm256_reduce_min_epi16*(v: M256i): int16 {.importc: "_mm256_reduce_min_epi16".}
+
+# operating : find the minimum unsigned 16-bit integer among all elements in a 256-bit vector
+# lane unit : uint16(epu16) / operation : min_unsigned(lanes[0..15])
+func mm256_reduce_min_epu16*(v: M256i): uint16 {.importc: "_mm256_reduce_min_epu16".}
+
+# --- 128-bit Vector Reductions (8-bit Integer) ---
+
+# operating : reduce a 128-bit integer vector by adding all 8-bit elements
+# lane unit : int8(epi8) / operation : sum(lanes[0..15])
+func mm_reduce_add_epi8*(w: M128i): int8 {.importc: "_mm_reduce_add_epi8".}
+
+# operating : reduce a 128-bit integer vector by multiplying all 8-bit elements
+# lane unit : int8(epi8) / operation : product(lanes[0..15])
+func mm_reduce_mul_epi8*(w: M128i): int8 {.importc: "_mm_reduce_mul_epi8".}
+
+# operating : reduce a 128-bit integer vector by bitwise AND on all 8-bit elements
+# lane unit : int8(epi8) / operation : AND(lanes[0..15])
+func mm_reduce_and_epi8*(w: M128i): int8 {.importc: "_mm_reduce_and_epi8".}
+
+# operating : reduce a 128-bit integer vector by bitwise OR on all 8-bit elements
+# lane unit : int8(epi8) / operation : OR(lanes[0..15])
+func mm_reduce_or_epi8*(w: M128i): int8 {.importc: "_mm_reduce_or_epi8".}
+
+# operating : find the maximum signed 8-bit integer among all elements in a 128-bit vector
+# lane unit : int8(epi8) / operation : max(lanes[0..15])
+func mm_reduce_max_epi8*(v: M128i): int8 {.importc: "_mm_reduce_max_epi8".}
+
+# operating : find the maximum unsigned 8-bit integer among all elements in a 128-bit vector
+# lane unit : uint8(epu8) / operation : max_unsigned(lanes[0..15])
+func mm_reduce_max_epu8*(v: M128i): uint8 {.importc: "_mm_reduce_max_epu8".}
+
+# operating : find the minimum signed 8-bit integer among all elements in a 128-bit vector
+# lane unit : int8(epi8) / operation : min(lanes[0..15])
+func mm_reduce_min_epi8*(v: M128i): int8 {.importc: "_mm_reduce_min_epi8".}
+
+# operating : find the minimum unsigned 8-bit integer among all elements in a 128-bit vector
+# lane unit : uint8(epu8) / operation : min_unsigned(lanes[0..15])
+func mm_reduce_min_epu8*(v: M128i): uint8 {.importc: "_mm_reduce_min_epu8".}
+
+# --- 256-bit Vector Reductions (8-bit Integer) ---
+
+# operating : reduce a 256-bit integer vector by adding all 8-bit elements
+# lane unit : int8(epi8) / operation : sum(lanes[0..31])
+func mm256_reduce_add_epi8*(w: M256i): int8 {.importc: "_mm256_reduce_add_epi8".}
+
+# operating : reduce a 256-bit integer vector by multiplying all 8-bit elements
+# lane unit : int8(epi8) / operation : product(lanes[0..31])
+func mm256_reduce_mul_epi8*(w: M256i): int8 {.importc: "_mm256_reduce_mul_epi8".}
+
+# operating : reduce a 256-bit integer vector by bitwise AND on all 8-bit elements
+# lane unit : int8(epi8) / operation : AND(lanes[0..31])
+func mm256_reduce_and_epi8*(w: M256i): int8 {.importc: "_mm256_reduce_and_epi8".}
+
+# operating : reduce a 256-bit integer vector by bitwise OR on all 8-bit elements
+# lane unit : int8(epi8) / operation : OR(lanes[0..31])
+func mm256_reduce_or_epi8*(w: M256i): int8 {.importc: "_mm256_reduce_or_epi8".}
+
+# operating : find the maximum signed 8-bit integer among all elements in a 256-bit vector
+# lane unit : int8(epi8) / operation : max(lanes[0..31])
+func mm256_reduce_max_epi8*(v: M256i): int8 {.importc: "_mm256_reduce_max_epi8".}
+
+# operating : find the maximum unsigned 8-bit integer among all elements in a 256-bit vector
+# lane unit : uint8(epu8) / operation : max_unsigned(lanes[0..31])
+func mm256_reduce_max_epu8*(v: M256i): uint8 {.importc: "_mm256_reduce_max_epu8".}
+
+# operating : find the minimum signed 8-bit integer among all elements in a 256-bit vector
+# lane unit : int8(epi8) / operation : min(lanes[0..31])
+func mm256_reduce_min_epi8*(v: M256i): int8 {.importc: "_mm256_reduce_min_epi8".}
+
+# operating : find the minimum unsigned 8-bit integer among all elements in a 256-bit vector
+# lane unit : uint8(epu8) / operation : min_unsigned(lanes[0..31])
+func mm256_reduce_min_epu8*(v: M256i): uint8 {.importc: "_mm256_reduce_min_epu8".}
 
 {.pop.}
