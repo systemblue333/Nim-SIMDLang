@@ -1,4 +1,6 @@
 import sse42
+import sse2
+import sse
 
 export sse42
 
@@ -725,5 +727,13 @@ func mm256_zextps128_ps256*(a: M128): M256 {.importc: "_mm256_zextps128_ps256".}
 # operating : zero-extend a 128-bit integer vector to 256-bit
 # lane unit : any (integer) / lane numbers : 128-bit -> 256-bit
 func mm256_zextsi128_si256*(a: M128i): M256i {.importc: "_mm256_zextsi128_si256".}
+
+# operating : extract a 16-bit integer from a 256-bit integer vector at a specified index
+# lane unit : int16(epi16) / index range : 0 -> 15 (16-bit units in 256-bit)
+func mm256_extract_epi16*(x: M256i, n: int32): int32 {.importc: "_mm256_extract_epi16".}
+
+# operating : extract an 8-bit integer from a 256-bit integer vector at a specified index
+# lane unit : int8(epi8) / index range : 0 -> 31 (8-bit units in 256-bit)
+func mm256_extract_epi8*(x: M256i, n: int32): int32 {.importc: "_mm256_extract_epi8".}
 
 {.pop.}
